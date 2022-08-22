@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "cardSwiper":"../../components/cardSwiper/index",
+    "card":"./components/card/index"
+  }
+}

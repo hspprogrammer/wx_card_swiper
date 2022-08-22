@@ -1,0 +1,12 @@
+<!--index.wxml-->
+<view class="container">
+  <cardSwiper 
+    generic:cardItem="card" 
+    cardsData="{{cardList}}"
+    offsetY="{{-20}}"
+    my_cards_panel="my_cardSwiper_panel"
+    id="heartCardSwiper"
+    bind:cardChange="cardChange"
+>
+</cardSwiper>
+</view>

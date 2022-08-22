@@ -1,0 +1,58 @@
+.cardsPanel{
+  position: relative;
+  transform-style: preserve-3d;
+}
+.card_item_panel{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  will-change: transform;
+  box-shadow: 0 2rpx 20rpx #999999;
+  transition: all ease 0.2s;
+  overflow: hidden;
+  transform-origin: 50% 100% 0;
+}
+.transform_top_origin{
+  transform-origin: 50% 0% 0;
+}
+
+@keyframes nextCard {
+  from {background-color: red;}
+  to {background-color: yellow;}
+}
+
+.operation_panel{
+  margin-top: 36rpx;
+  display: flex;
+  justify-content: center;
+  
+}
+.operation_item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.operation_name{
+  font-size: 28rpx;
+  color: #fff;
+  font-weight: bolder;
+  margin-top: 12rpx;
+}
+.like{
+  margin-left: 122rpx;
+}
+.icon_panel{
+  height: 80rpx;
+  width: 80rpx;
+  background-color: #fff;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+}
+.icon_img{
+  width: 42rpx;
+  height: 36rpx;
+}

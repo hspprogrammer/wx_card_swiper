@@ -1,0 +1,1 @@
+<view class="hear_card_panel">{{cardData}}</view>

@@ -1,0 +1,21 @@
+page{
+  overflow-x: hidden;
+  width: 750rpx;
+  padding-bottom: 78rpx;
+  padding-bottom: calc(78rpx + constant(safe-area-inset-bottom));
+  padding-bottom: calc(78rpx + env(safe-area-inset-bottom));
+  background-color: blue;
+}
+.des_text_panel{
+  margin-top: 28rpx;
+  text-align: center;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #fff;
+}
+.my_cardSwiper_panel{
+  width: 600rpx;
+  height: 1006rpx;
+  margin-left: 75rpx;
+  margin-top: 76rpx;
+}

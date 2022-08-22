@@ -1,0 +1,9 @@
+.hear_card_panel{
+  width: 600rpx;
+  height: 1006rpx;
+  background-color: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  padding: 32rpx;
+  box-sizing: border-box;
+}

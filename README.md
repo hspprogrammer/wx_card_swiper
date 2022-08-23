@@ -1,5 +1,6 @@
 
 公司最近要做一个类似于探探滑动卡片的需求，经过周五和周末两天的啪啦啪啦，终于做出来基本符合需求的组件，最终的效果图就是这样的了。
+<p align=center><img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/deb8989e53714d34bec48fb6bb7101cb~tplv-k3u1fbpfcp-watermark.image" alt="" height="400px" /></p>
 [效果图](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/deb8989e53714d34bec48fb6bb7101cb~tplv-k3u1fbpfcp-watermark.image)
 
 ## 小程序卡片滑动组件

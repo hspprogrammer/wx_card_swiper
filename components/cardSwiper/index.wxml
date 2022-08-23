@@ -1,11 +1,11 @@
 <wxs module="util" src="./index.wxs"></wxs>
 <view class="cardsPanel my_cards_panel">
-  <!--  style="{{util.cardStyle(offsetY,index,showNum,scale,nowIndex,slideThershold)}}" -->
   <block wx:for="{{cardsData}}" wx:key="index">
+  <!-- {{nowIndex - index ==0?'':'not_frist_card'}} -->
       <view
-      wx:if="{{util.isRender(index,nowIndex,showNum)}}" wx:key="{{index}}"
-      class="{{offsetY>0?'card_item_panel':'card_item_panel transform_top_origin'}}  my_card_item_panel {{nowIndex - index ==0?'':'not_frist_card'}}" 
-      style="top:{{util.cardStyleTop(offsetY,index,nowIndex)}}rpx;transform: translate3d(0, 0, {{util.cardStyleTranslate(showNum,index,nowIndex)}}px) scale({{util.cardStyleScale(scale,index,nowIndex)}});opacity:{{util.cardStyleOpacity(index,nowIndex)}};"
+      wx:if="{{item&&util.isRender(index,nowIndex,showNum,isCycle,cardsData.length)}}" wx:key="{{index}}"
+      class="{{offsetY>0?'card_item_panel':'card_item_panel transform_top_origin'}}  my_card_item_panel my_card_item_panel{{index}}" 
+      style="top:{{util.cardStyleTop(offsetY,index,nowIndex,showNum,isCycle,cardsData.length)}}rpx;transform: translate3d(0, 0, {{util.cardStyleTranslate(showNum,index,nowIndex,showNum,isCycle,cardsData.length)}}px) scale({{util.cardStyleScale(scale,index,nowIndex,showNum,isCycle,cardsData.length)}});opacity:{{util.cardStyleOpacity(index,nowIndex,showNum,isCycle,cardsData.length)}};"
       data-card-index="{{nowIndex}}"
       data-card-list-index="{{index}}"
       data-card-zindex="{{showNum-index}}" 
@@ -13,12 +13,13 @@
       data-rotate-deg="{{rotateDeg}}"
       data-context-width="{{showRangeW}}" 
       data-slide-duration="{{slideDuration}}" 
+      data-cards-length = "{{cardsData.length}}"
       mut-bind:touchstart="{{util.touchstart}}" 
       mut-bind:touchmove="{{util.touchmove}}" 
       mut-bind:touchend="{{util.touchend}}"
       mut-bind:transitionend="{{util.nextCarkStart}}"
       >
-        <cardItem class="my_card_item" cardData="{index:{{index}},isRender:{{util.isRender(index,nowIndex,showNum)}}}" nowIndex="{{nowIndex}}" cardIndex="{{index}}"></cardItem>
+        <cardItem class="my_card_item" cardData="{index:{{item}},isRender:{{util.isRender(index,nowIndex,showNum,isCycle,cardsData.length)}}}" nowIndex="{{nowIndex}}" cardIndex="{{index}}"></cardItem>
       </view>
   </block>
 </view>
@@ -30,6 +31,7 @@
           data-card-index="{{nowIndex}}" 
           data-rotate-deg="{{rotateDeg}}"
           data-slide-thershold="{{slideThershold}}"
+          data-cards-length = "{{cardsData.length}}"
           >
             <image class="icon_img" />
         </view>
@@ -41,6 +43,7 @@
         data-card-index="{{nowIndex}}" 
         data-rotate-deg="{{rotateDeg}}"
         data-slide-thershold="{{slideThershold}}"
+        data-cards-length = "{{cardsData.length}}"
         >
         <view class="icon_panel">
             <image class="icon_img" />

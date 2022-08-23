@@ -3,6 +3,8 @@
   <cardSwiper 
     generic:cardItem="card" 
     cardsData="{{cardList}}"
+    nextPageData="{{nextPageData}}"
+    isCycle="{{!!nextPageData.length}}"
     offsetY="{{-20}}"
     my_cards_panel="my_cardSwiper_panel"
     id="heartCardSwiper"

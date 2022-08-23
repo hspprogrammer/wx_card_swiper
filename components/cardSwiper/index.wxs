@@ -11,6 +11,7 @@ var SLIDE_DURATION = 0 //手指离开屏幕后滑出界面时长，单位(ms)毫
 var CONTEXT_WIDTH = 0 // 组件展示范围宽度
 var last_instance = null;
 var last_cardIndex = null;
+var cardsLength = 0; //当前渲染卡片列表的长度
 /*
 卡片当前处于的transition状态 
   0 transition静止状态或结束状态
@@ -28,29 +29,59 @@ var OUT_NEXT_STATUS = 0;
 
 
 // 判断当前card是否渲染
-function isRender(index,nowIndex,showNum){
+function isRender(index,nowIndex,showNum,isCycle,dataLength){
+  if(isCycle){
+    var position = dataLength  - nowIndex; //确定当前显示的卡片所处位置
+    if(position < showNum){
+      if(showNum - position > index) return true;
+    }
+  }
   return !(index < nowIndex || nowIndex+showNum -1 < index);
 }
 
-// 处理当前card的style
-function cardStyle(offsetY,index,showNum,scale,nowIndex,slideThershold){
-  if(index < nowIndex || nowIndex+showNum -1 < index || lock) return '';
-  var _top = offsetY*(index - nowIndex);
-  var _translate3dZ = showNum-(index - nowIndex);
-  var _scale = 1-scale*(index - nowIndex);
-  return "top:"+_top+"rpx;transform: translate3d(0, 0, "+_translate3dZ+"px) scale("+_scale+"); "
-}
 
-function cardStyleTop(offsetY,index,nowIndex){
+function cardStyleTop(offsetY,index,nowIndex,showNum,isCycle,dataLength){
+  if(isCycle){
+    var position = dataLength  - nowIndex; //确定当前显示的卡片所处位置
+    if(position < showNum){
+      if(showNum - position > index) {
+        return offsetY*(position+index)
+      };
+    }
+  }
   return offsetY*(index - nowIndex);
 }
-function cardStyleTranslate(showNum,index,nowIndex){
+function cardStyleTranslate(showNum,index,nowIndex,showNum,isCycle,dataLength){
+  if(isCycle){
+    var position = dataLength  - nowIndex; //确定当前显示的卡片所处位置
+    if(position < showNum){
+      if(showNum - position > index) {
+        return showNum-(position+index)
+      };
+    }
+  }
   return showNum-(index - nowIndex);
 }
-function cardStyleScale(scale,index,nowIndex){
+function cardStyleScale(scale,index,nowIndex,showNum,isCycle,dataLength){
+  if(isCycle){
+    var position = dataLength  - nowIndex; //确定当前显示的卡片所处位置
+    if(position < showNum){
+      if(showNum - position > index) {
+        return 1-scale*(position+index)
+      };
+    }
+  }
   return 1-scale*(index - nowIndex);
 }
-function cardStyleOpacity(index,nowIndex){
+function cardStyleOpacity(index,nowIndex,showNum,isCycle,dataLength){
+  if(isCycle){
+    var position = dataLength  - nowIndex; //确定当前显示的卡片所处位置
+    if(position < showNum){
+      if(showNum - position > index) {
+        return 0.6 
+      };
+    }
+  }
   return index == nowIndex?1:0.6 ;
 }
 
@@ -66,9 +97,6 @@ function touchstart(e,ownerInstance){
   }
   if(lock) return;
   lock = true;
-  ownerInstance.selectComponent('.not_frist_card').setStyle({
-    "opacity": "1",
-  });
 
 
   startX = e.touches[0].clientX
@@ -77,7 +105,12 @@ function touchstart(e,ownerInstance){
   SLIDE_DURATION = dataset.slideDuration
   CONTEXT_WIDTH = dataset.contextWidth + Math.floor((Math.abs(ROTATE_DEG) % 360) * dataset.contextWidth / 180)
   SLIDE_THRESHOLD = dataset.slideThershold
+  cardsLength = dataset.cardsLength;
   
+  var notFristCardClass = '.my_card_item_panel'+(cardIndex + 1 == cardsLength?0:cardIndex + 1)
+  ownerInstance.selectComponent(notFristCardClass)&&ownerInstance.selectComponent(notFristCardClass).setStyle({
+    "opacity": "1",
+  });
 }
 
 // 移动中
@@ -109,7 +142,8 @@ function touchend(e,ownerInstance){
     TRANSITION_STATUS = 1
   }else{
     lock = false
-    ownerInstance.selectComponent('.not_frist_card').setStyle({
+    var notFristCardClass = '.my_card_item_panel'+(cardIndex + 1 == cardsLength?0:cardIndex + 1)
+    ownerInstance.selectComponent(notFristCardClass)&&ownerInstance.selectComponent(notFristCardClass).setStyle({
       "opacity": Math.abs(moveX) < SLIDE_THRESHOLD?"0.6":"1",
     });
   };
@@ -135,7 +169,8 @@ function nextCarkStart(e,ownerInstance){
       index:cardIndex+1
     })
 
-    ownerInstance.selectComponent('.not_frist_card').setStyle({
+    var notFristCardClass = '.my_card_item_panel'+(cardIndex + 1 == cardsLength?0:cardIndex + 1)
+    ownerInstance.selectComponent(notFristCardClass)&&ownerInstance.selectComponent(notFristCardClass).setStyle({
       "opacity": Math.abs(moveX) < SLIDE_THRESHOLD?"0.6":"1",
     });
     last_cardIndex = cardIndex
@@ -150,7 +185,7 @@ function nextCarkStart(e,ownerInstance){
 }
 function tapNextCard(e,ownerInstance){
   if(lock ) return;
-  instance = ownerInstance.selectComponent('.my_card_item_panel');
+  instance = ownerInstance.selectComponent('.my_card_item_panel'+e.instance.getDataset().cardIndex);
   if(last_instance == instance) return;
   var dataset = instance.getDataset() //页面传值
   cardIndex = dataset.cardIndex
@@ -158,15 +193,18 @@ function tapNextCard(e,ownerInstance){
 
   lock = true;
   last_instance=instance;
-  ownerInstance.selectComponent('.not_frist_card').setStyle({
-    "opacity": "1",
-  });
 
   ROTATE_DEG = dataset.rotateDeg
   SLIDE_THRESHOLD = dataset.slideThershold
 
 
   var _direction =  e.instance.getDataset().direction //页面传值
+  cardsLength = e.instance.getDataset().cardsLength;
+
+  var notFristCardClass = '.my_card_item_panel'+(cardIndex + 1 == cardsLength?0:cardIndex + 1)
+  ownerInstance.selectComponent(notFristCardClass)&&ownerInstance.selectComponent(notFristCardClass).setStyle({
+    "opacity": "1",
+  });
 
   moveX = _direction==1?750:-750;
   TRANSITION_STATUS = 1;
@@ -181,7 +219,6 @@ module.exports = {
   touchmove: touchmove,
   touchend: touchend,
   isRender:isRender,
-  cardStyle:cardStyle,
   nextCarkStart:nextCarkStart,
   tapNextCard:tapNextCard,
   cardStyleTop:cardStyleTop,

@@ -7,7 +7,6 @@
     isCycle="{{!!nextPageData.length}}"
     offsetY="{{-20}}"
     my_cards_panel="my_cardSwiper_panel"
-    id="heartCardSwiper"
     bind:cardChange="cardChange"
 >
 </cardSwiper>
